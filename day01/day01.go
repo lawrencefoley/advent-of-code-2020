@@ -24,8 +24,8 @@ func main() {
 
 	complimentMap := make(map[int]int)
 
-	for i := 0; i < len(splitText); i++ {
-		currentNum, err := strconv.Atoi(splitText[i])
+	for _, textVal := range splitText {
+		currentNum, err := strconv.Atoi(textVal)
 		if err != nil {
 			// skip non-number lines
 			continue
