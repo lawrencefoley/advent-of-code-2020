@@ -64,6 +64,20 @@ func passwordIsValid(min int, max int, letter string, password string) bool {
 	return count >= min && count <= max
 }
 
+func passwordIsValidPart2(index1 int, index2 int, letter string, password string) bool {
+	count := 0
+	var indexes = []int{index1, index2}
+
+	for _, i := range indexes {
+		if []rune(password)[i-1] == []rune(letter)[0] {
+			count++
+		}
+	}
+
+	// Password validation - only 1 occurance
+	return count == 1
+}
+
 func main() {
 	fmt.Println("day02")
 	var passwordRegex = regexp.MustCompile(`(\d+)-(\d+) (\w)\: (\w+)`)
@@ -77,5 +91,16 @@ func main() {
 		}
 	}
 
-	fmt.Println(validLines)
+	fmt.Printf("part 1: %d\n", validLines)
+
+	// Part 2
+	var part2ValidLines = 0
+	for _, line := range lines {
+		p = parseLine(line, passwordRegex)
+		if passwordIsValidPart2(p.min, p.max, p.letter, p.password) {
+			part2ValidLines++
+		}
+	}
+
+	fmt.Printf("part 2: %d\n", part2ValidLines)
 }
