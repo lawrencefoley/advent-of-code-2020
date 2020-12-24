@@ -45,25 +45,39 @@ func coordinateIsTree(mapData *[][]bool, x int, y int) bool {
 	return (*mapData)[y][x]
 }
 
+func getTreesHit(mapData *[][]bool, slopeX int, slopeY int) int {
+	currentX := 0
+	currentY := 0
+	totalTrees := 0
+
+	for currentY < len(*mapData) {
+		if coordinateIsTree(mapData, currentX, currentY) {
+			totalTrees++
+		}
+		currentX += slopeX
+		currentY += slopeY
+	}
+
+	return totalTrees
+}
+
 func main() {
 	fmt.Println("day03")
 
 	mapData := readMapFile("input.txt")
+	fmt.Printf("part 1: %d\n", getTreesHit(&mapData, 3, 1))
 
-	slopeHorizontal := 3
-	slopeVertical := 1
+	var partTwoSlopes [][]int = make([][]int, 5)
+	partTwoSlopes[0] = []int{1, 1}
+	partTwoSlopes[1] = []int{3, 1}
+	partTwoSlopes[2] = []int{5, 1}
+	partTwoSlopes[3] = []int{7, 1}
+	partTwoSlopes[4] = []int{1, 2}
 
-	currentX := 0
-	currentY := 0
-
-	totalTrees := 0
-	for currentY < len(mapData) {
-		if coordinateIsTree(&mapData, currentX, currentY) {
-			totalTrees++
-		}
-		currentX += slopeHorizontal
-		currentY += slopeVertical
+	partTwoTotal := 1
+	for _, slope := range partTwoSlopes {
+		partTwoTotal *= getTreesHit(&mapData, slope[0], slope[1])
 	}
 
-	fmt.Printf("part 1: %d\n", totalTrees)
+	fmt.Printf("part 2: %d\n", partTwoTotal)
 }
